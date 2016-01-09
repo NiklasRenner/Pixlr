@@ -30,8 +30,8 @@ public class Game extends Frame {
     }
 
     public Game() {
-        player = new Player(ObjectEnum.PLAYER.ordinal(), 64, 64, X, Y);
         blocks = new Level("graphics/levelTest.png").loadLevel();
+        player = new Player(ObjectEnum.PLAYER.ordinal(), blocks, 64, 64, X, Y);
 
         then = System.currentTimeMillis();
         fps = 0;
@@ -41,7 +41,7 @@ public class Game extends Frame {
     }
 
     @Override
-    public void keyPressedAction(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             System.exit(0);
         }
@@ -69,8 +69,18 @@ public class Game extends Frame {
     }
 
     @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            player.walkLeft(false);
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            player.walkRight(false);
+        }
+    }
+
+    @Override
     public void runLogic() {
-        player.collisionCheck(blocks);
         player.runLogic();
     }
 
@@ -88,17 +98,6 @@ public class Game extends Frame {
         getFps(g);
         g.drawString("Lives: " + player.getLives(), 8, 52);
         g.dispose();
-    }
-
-    @Override
-    public void keyReleaseAction(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            player.walkLeft(false);
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            player.walkRight(false);
-        }
     }
 
     @Override
