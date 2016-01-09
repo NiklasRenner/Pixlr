@@ -81,6 +81,7 @@ public class Game extends Frame {
         g.translate((int) player.getCamX(), (int) player.getCamY());
         player.drawGraphics(g);
         for (GameObject block : blocks) {
+            block.runLogic();
             block.drawGraphics(g);
         }
         g.translate((int) -player.getCamX(), (int) -player.getCamY());
