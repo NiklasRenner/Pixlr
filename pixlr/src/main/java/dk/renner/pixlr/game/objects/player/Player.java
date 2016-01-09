@@ -7,8 +7,7 @@ import dk.renner.pixlr.game.objects.GameObject;
 import dk.renner.pixlr.game.objects.ObjectEnum;
 import dk.renner.pixlr.game.objects.blocks.Apple;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -44,6 +43,7 @@ public class Player extends GameObject {
     private boolean walkingRight;
     private int lives = START_LIVES;
     private final ArrayList<Apple> apples;
+    private int last;
 
     public Player(int id, int width, int height, float x, float y) {
         super(id, width, height, x, y);
@@ -62,11 +62,15 @@ public class Player extends GameObject {
         walkingRight = false;
         facing = 0;
         apples = new ArrayList<>();
+
+        last = 0;
     }
 
     public void shoot() {
-        int direction = 0;
-        if (velX < 0) {
+        int direction;
+        if (velX == 0) {
+            direction = last;
+        } else if (velX < 0) {
             direction = 2;
         } else {
             direction = 1;
@@ -85,11 +89,13 @@ public class Player extends GameObject {
     }
 
     public void walkLeft(boolean walking) {
+        last = 2;
         walkingLeft = walking;
         setXMovement();
     }
 
     public void walkRight(boolean walking) {
+        last = 1;
         walkingRight = walking;
         setXMovement();
     }
@@ -297,5 +303,5 @@ public class Player extends GameObject {
         }
         return camY;
     }
-    
+
 }
