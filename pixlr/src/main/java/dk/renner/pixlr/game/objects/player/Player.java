@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Player extends GameObject {
 
     private static final float GRAVITY = 0.50f;
-    private static final float JUMP_HEIGHT = -10f;
+    private static final float JUMP_HEIGHT = -8f;
     private static final float WALK_SPEED = 3;
     private static final float MAX_SPEED = 25f;
     private static final boolean DOUBLE_JUMPING_ALLOWED = true;
