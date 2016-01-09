@@ -1,0 +1,3 @@
+Blue	(0,0,255):	Wall
+Green	(0,255,0):	Grass
+Red		(255,0,0):	Spikes	

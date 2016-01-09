@@ -15,6 +15,8 @@ import java.util.ArrayList;
  */
 public class Game extends Frame {
 
+    public static final int X = 500;
+    public static final int Y = 64;
     private long then;
     private int fps;
     private int frameCount;
@@ -28,7 +30,7 @@ public class Game extends Frame {
     }
 
     public Game() {
-        player = new Player(ObjectEnum.PLAYER.ordinal(), 64, 64, 225, 225);
+        player = new Player(ObjectEnum.PLAYER.ordinal(), 64, 64, X, Y);
         blocks = new Level("graphics/levelTest.png").loadLevel();
 
         then = System.currentTimeMillis();
@@ -45,8 +47,8 @@ public class Game extends Frame {
         }
 
         if (e.getKeyCode() == KeyEvent.VK_R) {
-            player.setX(25);
-            player.setY(25);
+            player.setX(X);
+            player.setY(Y);
         }
 
         if (e.getKeyCode() == KeyEvent.VK_UP) {
