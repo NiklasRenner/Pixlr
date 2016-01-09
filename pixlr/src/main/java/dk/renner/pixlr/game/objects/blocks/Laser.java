@@ -14,6 +14,8 @@ public class Laser extends GameObject {
     private int counter;
     private boolean active;
 
+    private Rectangle rec = new Rectangle((int) x + 15, (int) y, 2, 32);
+
     public Laser(int id, int width, int height, float x, float y) {
         super(id, width, height, x, y);
 
@@ -43,30 +45,36 @@ public class Laser extends GameObject {
         } else {
             g.drawImage(laserSprite[1], (int) x, (int) y, null);
         }
+//        g.setColor(Color.RED);
+//        g.drawRect(rec.x, rec.y, rec.width, rec.height);
     }
 
     @Override
     public Rectangle getBounds() {
-        return null;
+        return rec;
     }
 
     @Override
     public Rectangle getBoundsTop() {
-        return null;
+        throw new UnsupportedOperationException("Use getBounds on blocks.");
     }
 
     @Override
     public Rectangle getBoundsBottom() {
-        return null;
+        throw new UnsupportedOperationException("Use getBounds on blocks.");
     }
 
     @Override
     public Rectangle getBoundsLeft() {
-        return null;
+        throw new UnsupportedOperationException("Use getBounds on blocks.");
     }
 
     @Override
     public Rectangle getBoundsRight() {
-        return null;
+        throw new UnsupportedOperationException("Use getBounds on blocks.");
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }

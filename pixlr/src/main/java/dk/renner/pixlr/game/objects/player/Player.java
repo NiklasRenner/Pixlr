@@ -6,6 +6,7 @@ import dk.renner.pixlr.game.graphics.Sprite;
 import dk.renner.pixlr.game.objects.GameObject;
 import dk.renner.pixlr.game.objects.ObjectEnum;
 import dk.renner.pixlr.game.objects.blocks.Apple;
+import dk.renner.pixlr.game.objects.blocks.Laser;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -44,9 +45,14 @@ public class Player extends GameObject {
     private int lives = START_LIVES;
     private final ArrayList<Apple> apples;
     private int last;
+    private float spawnX;
+    private float spawnY;
 
     public Player(int id, int width, int height, float x, float y) {
         super(id, width, height, x, y);
+
+        spawnX = x;
+        spawnY = y;
 
         idleAnim = new Animation(10, Sprite.player[0], Sprite.player[1]);
         leftAnim = new Animation(3, Sprite.player[2], Sprite.player[3], Sprite.player[2]);
@@ -176,8 +182,17 @@ public class Player extends GameObject {
                     if (lives <= 0) {
                         //System.exit(0);
                     }
-                    x = 25;
-                    y = 25;
+                    moveToSpawn();
+                }
+            } else if (object.getId() == ObjectEnum.LASER_BOTTOM.ordinal() || object.getId() == ObjectEnum.LASER_TOP.ordinal()) {
+                if (getFutureBoundsLeft().intersects(object.getBounds())
+                        || getFutureBoundsRight().intersects(object.getBounds())
+                        || getFutureBoundsTop().intersects(object.getBounds())
+                        || getFutureBoundsBottom().intersects(object.getBounds())) {
+                    if(((Laser)object).isActive()) {
+                        lives--;
+                        moveToSpawn();
+                    }
                 }
             }
 
@@ -191,6 +206,11 @@ public class Player extends GameObject {
             apple.collision(objects);
         }
 
+    }
+
+    private void moveToSpawn() {
+        x = spawnX;
+        y = spawnY;
     }
 
     @Override
