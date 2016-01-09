@@ -128,10 +128,6 @@ public abstract class Frame extends JFrame implements KeyListener, MouseMotionLi
         }
     }
 
-    public abstract void keyPressedAction(KeyEvent e);
-
-    public abstract void keyReleaseAction(KeyEvent e);
-
     @Override
     public void keyTyped(KeyEvent e) {
         e.consume();
@@ -139,13 +135,11 @@ public abstract class Frame extends JFrame implements KeyListener, MouseMotionLi
 
     @Override
     public void keyPressed(KeyEvent e) {
-        keyPressedAction(e);
         e.consume();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        keyReleaseAction(e);
         e.consume();
     }
 

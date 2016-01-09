@@ -44,15 +44,18 @@ public class Player extends GameObject {
     private boolean walkingRight;
     private int lives = START_LIVES;
     private final ArrayList<Apple> apples;
+    private ArrayList<GameObject> blocks;
     private int last;
     private float spawnX;
     private float spawnY;
 
-    public Player(int id, int width, int height, float x, float y) {
+    public Player(int id, ArrayList<GameObject> blocks, int width, int height, float x, float y) {
         super(id, width, height, x, y);
 
         spawnX = x;
         spawnY = y;
+
+        this.blocks = blocks;
 
         idleAnim = new Animation(10, Sprite.player[0], Sprite.player[1]);
         leftAnim = new Animation(3, Sprite.player[2], Sprite.player[3], Sprite.player[2]);
@@ -119,6 +122,8 @@ public class Player extends GameObject {
     @Override
     public void runLogic() {
 
+        boolean update = collisionCheck();
+
         if (velX < 0) {
             facing = 2;
             leftAnim.runAnimation();
@@ -130,9 +135,14 @@ public class Player extends GameObject {
             idleAnim.runAnimation();
         }
 
-        x += velX;
-        y += velY;
+        for (Apple apple : apples) {
+            apple.runLogic();
+        }
 
+        if (!update) {
+            x += velX;
+        }
+        y += velY;
         velY += GRAVITY;
 
         if (velY > MAX_SPEED) {
@@ -141,26 +151,20 @@ public class Player extends GameObject {
             velY = -MAX_SPEED;
         }
 
-        for (Apple apple : apples) {
-            apple.runLogic();
-        }
-
     }
 
-    public void collisionCheck(ArrayList<GameObject> objects) {
+    public boolean collisionCheck() {
 
+        boolean hit = false;
         boolean botHit = false;
 
-        for (GameObject object : objects) {
+        for (GameObject object : blocks) {
 
             if (object.getId() == ObjectEnum.BLOCK.ordinal()) {
-
                 if (getFutureBoundsLeft().intersects(object.getBounds())) {
-                    x = object.getX() + object.getWidth() - 50;
-                    velX = 0;
+                    hit = true;
                 } else if (getFutureBoundsRight().intersects(object.getBounds())) {
-                    x = object.getX() - 44;
-                    velX = 0;
+                    hit = true;
                 } else if (getFutureBoundsTop().intersects(object.getBounds())) {
                     y = object.getY() + object.getHeight() - 42;
                     velY = 0;
@@ -189,7 +193,7 @@ public class Player extends GameObject {
                         || getFutureBoundsRight().intersects(object.getBounds())
                         || getFutureBoundsTop().intersects(object.getBounds())
                         || getFutureBoundsBottom().intersects(object.getBounds())) {
-                    if(((Laser)object).isActive()) {
+                    if (((Laser) object).isActive()) {
                         lives--;
                         moveToSpawn();
                     }
@@ -203,9 +207,10 @@ public class Player extends GameObject {
         }
 
         for (Apple apple : apples) {
-            apple.collision(objects);
+            apple.collision(blocks);
         }
 
+        return hit;
     }
 
     private void moveToSpawn() {
