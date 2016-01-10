@@ -174,7 +174,12 @@ public class Player extends GameObject {
                     jumping = false;
                     doubleJumping = false;
                     falling = false;
+                    if(velY >= MAX_SPEED){
+                        lives--;
+                        moveToSpawn();
+                    }
                     velY = 0;
+
                 }
 
             } else if (object.getId() == ObjectEnum.SPIKES.ordinal()) {
