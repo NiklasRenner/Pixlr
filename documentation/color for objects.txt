@@ -1,3 +1,6 @@
-Blue	(0,0,255):	Wall
-Green	(0,255,0):	Grass
-Red		(255,0,0):	Spikes	
+Blue	(0,0,255)		Wall
+Green	(0,255,0)		Grass
+Red		(255,0,0)		Spikes	
+White	(255,255,255)	Top Laser
+Grey	(128,128,128)	Bottom Laser
+Yellow	(255,255,0)		Checkpoint

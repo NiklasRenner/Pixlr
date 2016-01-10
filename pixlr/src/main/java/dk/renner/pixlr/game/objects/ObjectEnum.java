@@ -10,6 +10,7 @@ public enum ObjectEnum {
     SPIKES,
     GRASS,
     LASER_TOP,
-    LASER_BOTTOM
+    LASER_BOTTOM,
+    CHECKPOINT
 
 }

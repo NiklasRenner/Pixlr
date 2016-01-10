@@ -6,6 +6,7 @@ import dk.renner.pixlr.game.graphics.Sprite;
 import dk.renner.pixlr.game.objects.GameObject;
 import dk.renner.pixlr.game.objects.ObjectEnum;
 import dk.renner.pixlr.game.objects.blocks.Apple;
+import dk.renner.pixlr.game.objects.blocks.Checkpoint;
 import dk.renner.pixlr.game.objects.blocks.Laser;
 
 import java.awt.*;
@@ -203,6 +204,13 @@ public class Player extends GameObject {
                         moveToSpawn();
                     }
                 }
+            } else if (object.getId() == ObjectEnum.CHECKPOINT.ordinal()) {
+                if (getFutureBoundsLeft().intersects(object.getBounds())
+                        || getFutureBoundsRight().intersects(object.getBounds())
+                        || getFutureBoundsTop().intersects(object.getBounds())
+                        || getFutureBoundsBottom().intersects(object.getBounds())) {
+                    ((Checkpoint)object).checkpointReached(this);
+                }
             }
 
         }
@@ -332,6 +340,11 @@ public class Player extends GameObject {
             camY -= 26;
         }
         return camY;
+    }
+
+    public void setSpawnPoint(int x, int y) {
+        spawnX = x;
+        spawnY = y;
     }
 
 }
