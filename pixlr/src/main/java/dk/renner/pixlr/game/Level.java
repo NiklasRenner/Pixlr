@@ -3,10 +3,7 @@ package dk.renner.pixlr.game;
 import dk.renner.pixlr.game.graphics.BufferedImageLoader;
 import dk.renner.pixlr.game.objects.GameObject;
 import dk.renner.pixlr.game.objects.ObjectEnum;
-import dk.renner.pixlr.game.objects.blocks.Block;
-import dk.renner.pixlr.game.objects.blocks.Checkpoint;
-import dk.renner.pixlr.game.objects.blocks.Laser;
-import dk.renner.pixlr.game.objects.blocks.Spikes;
+import dk.renner.pixlr.game.objects.blocks.*;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -54,6 +51,10 @@ public class Level {
 
                 if (red == 255 && green == 255 && blue == 0) {
                     objects.add(new Checkpoint(ObjectEnum.CHECKPOINT.ordinal(), 64, 64, x * 32, y * 32));
+                }
+
+                if (red == 128 && green == 128 && blue == 0) {
+                    objects.add(new MovingBlock(ObjectEnum.BLOCK.ordinal(), 64, 64, x * 32, y * 32));
                 }
 
             }

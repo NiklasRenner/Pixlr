@@ -6,6 +6,7 @@ import dk.renner.pixlr.game.objects.player.Player;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by Daniel on 09-01-2016.
@@ -24,7 +25,7 @@ public class Checkpoint extends GameObject {
     }
 
     @Override
-    public void runLogic() {
+    public void runLogic(ArrayList<GameObject> blocks) {
 
     }
 

@@ -30,8 +30,8 @@ public class Game extends Frame {
     }
 
     public Game() {
+        player = new Player(ObjectEnum.PLAYER.ordinal(), 64, 64, X, Y);
         blocks = new Level("graphics/levelTest.png").loadLevel();
-        player = new Player(ObjectEnum.PLAYER.ordinal(), blocks, 64, 64, X, Y);
 
         then = System.currentTimeMillis();
         fps = 0;
@@ -81,7 +81,7 @@ public class Game extends Frame {
 
     @Override
     public void runLogic() {
-        player.runLogic();
+        player.runLogic(blocks);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class Game extends Frame {
         g.translate((int) player.getCamX(), (int) player.getCamY());
         player.drawGraphics(g);
         for (GameObject block : blocks) {
-            block.runLogic();
+            block.runLogic(blocks);
             block.drawGraphics(g);
         }
         g.translate((int) -player.getCamX(), (int) -player.getCamY());

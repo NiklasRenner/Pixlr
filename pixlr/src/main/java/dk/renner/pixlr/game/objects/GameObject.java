@@ -2,6 +2,7 @@ package dk.renner.pixlr.game.objects;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 public abstract class GameObject {
 
@@ -23,7 +24,7 @@ public abstract class GameObject {
         velY = 0;
     }
 
-    public abstract void runLogic();
+    public abstract void runLogic(ArrayList<GameObject> blocks);
 
     public abstract void drawGraphics(Graphics g);
 

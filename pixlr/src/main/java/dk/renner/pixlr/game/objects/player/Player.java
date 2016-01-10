@@ -8,6 +8,7 @@ import dk.renner.pixlr.game.objects.ObjectEnum;
 import dk.renner.pixlr.game.objects.blocks.Apple;
 import dk.renner.pixlr.game.objects.blocks.Checkpoint;
 import dk.renner.pixlr.game.objects.blocks.Laser;
+import dk.renner.pixlr.game.objects.blocks.MovingBlock;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -45,18 +46,15 @@ public class Player extends GameObject {
     private boolean walkingRight;
     private int lives = START_LIVES;
     private final ArrayList<Apple> apples;
-    private ArrayList<GameObject> blocks;
     private int last;
     private float spawnX;
     private float spawnY;
 
-    public Player(int id, ArrayList<GameObject> blocks, int width, int height, float x, float y) {
+    public Player(int id, int width, int height, float x, float y) {
         super(id, width, height, x, y);
 
         spawnX = x;
         spawnY = y;
-
-        this.blocks = blocks;
 
         idleAnim = new Animation(10, Sprite.player[0], Sprite.player[1]);
         leftAnim = new Animation(3, Sprite.player[2], Sprite.player[3], Sprite.player[2]);
@@ -113,17 +111,17 @@ public class Player extends GameObject {
     private void setXMovement() {
         if ((walkingLeft && walkingRight) || (!walkingLeft && !walkingRight)) {
             velX = 0;
-        } else if (walkingLeft && !walkingRight) {
+        } else if (walkingLeft) {
             velX = -WALK_SPEED;
-        } else if (!walkingLeft && walkingRight) {
+        } else {
             velX = WALK_SPEED;
         }
     }
 
     @Override
-    public void runLogic() {
+    public void runLogic(ArrayList<GameObject> blocks) {
 
-        boolean update = collisionCheck();
+        boolean update = collisionCheck(blocks);
 
         if (velX < 0) {
             facing = 2;
@@ -137,7 +135,7 @@ public class Player extends GameObject {
         }
 
         for (Apple apple : apples) {
-            apple.runLogic();
+            apple.runLogic(blocks);
         }
 
         if (!update) {
@@ -154,7 +152,7 @@ public class Player extends GameObject {
 
     }
 
-    public boolean collisionCheck() {
+    public boolean collisionCheck(ArrayList<GameObject> blocks) {
 
         boolean hit = false;
         boolean botHit = false;
@@ -163,7 +161,7 @@ public class Player extends GameObject {
 
             if (object.getId() == ObjectEnum.BLOCK.ordinal()) {
                 if (getFutureBoundsLeft().intersects(object.getBounds())) {
-                    hit = true;
+                    hit =  true;
                 } else if (getFutureBoundsRight().intersects(object.getBounds())) {
                     hit = true;
                 } else if (getFutureBoundsTop().intersects(object.getBounds())) {

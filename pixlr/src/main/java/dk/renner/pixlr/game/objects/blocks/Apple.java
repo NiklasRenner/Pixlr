@@ -29,7 +29,7 @@ public class Apple extends GameObject {
     }
 
     @Override
-    public void runLogic() {
+    public void runLogic(ArrayList<GameObject> blocks) {
         if(velY<25){
             velY+=0.5f;
         }

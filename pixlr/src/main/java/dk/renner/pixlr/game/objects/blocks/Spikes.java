@@ -6,6 +6,7 @@ import dk.renner.pixlr.game.objects.GameObject;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,7 +24,7 @@ public class Spikes extends GameObject {
     }
 
     @Override
-    public void runLogic() {
+    public void runLogic(ArrayList<GameObject> blocks) {
 
     }
 

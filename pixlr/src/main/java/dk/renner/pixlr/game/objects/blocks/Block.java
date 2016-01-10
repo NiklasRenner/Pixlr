@@ -3,9 +3,10 @@ package dk.renner.pixlr.game.objects.blocks;
 import dk.renner.pixlr.game.graphics.Sprite;
 import dk.renner.pixlr.game.objects.GameObject;
 import dk.renner.pixlr.game.objects.ObjectEnum;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  *
@@ -28,7 +29,7 @@ public class Block extends GameObject {
     }
 
     @Override
-    public void runLogic() {
+    public void runLogic(ArrayList<GameObject> blocks) {
         
     }
 

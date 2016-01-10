@@ -6,6 +6,7 @@ import dk.renner.pixlr.game.objects.ObjectEnum;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Laser extends GameObject {
 
@@ -30,7 +31,7 @@ public class Laser extends GameObject {
     }
 
     @Override
-    public void runLogic() {
+    public void runLogic(ArrayList<GameObject> blocks) {
         counter++;
         if (counter >= timer) {
             active = !active;
