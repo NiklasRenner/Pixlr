@@ -35,8 +35,8 @@ public class Checkpoint extends GameObject {
         } else {
             g.drawImage(checkpointSprite[0], (int) x, (int) y, null);
         }
-        g.setColor(Color.BLACK);
-        g.drawRect(hitbox.x,hitbox.y,hitbox.width,hitbox.height);
+//        g.setColor(Color.BLACK);
+//        g.drawRect(hitbox.x,hitbox.y,hitbox.width,hitbox.height);
     }
 
     @Override

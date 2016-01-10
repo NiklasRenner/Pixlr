@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Game extends Frame {
 
-    public static final int X = 500;
+    public static final int X = 64;
     public static final int Y = 64;
     private long then;
     private int fps;
