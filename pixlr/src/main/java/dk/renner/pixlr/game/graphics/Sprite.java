@@ -9,7 +9,7 @@ public class Sprite {
     public static final BufferedImage[] apple = new BufferedImage[1];
     public static final BufferedImage[] laserTop = new BufferedImage[2];
     public static final BufferedImage[] laserBottom = new BufferedImage[2];
-    public static final BufferedImage[] checkpoint = new BufferedImage[2];
+    public static final BufferedImage[] checkpoint = new BufferedImage[10];
 
     static {
         load();
@@ -38,8 +38,15 @@ public class Sprite {
         laserBottom[0] = SpriteSheet.playerSheet.grabImage(5, 5, 32, 32);
         laserBottom[1] = SpriteSheet.playerSheet.grabImage(7, 5, 32, 32);
 
-        checkpoint[0] = SpriteSheet.playerSheet.grabImage(7, 1, 32, 64);
-        checkpoint[1] = SpriteSheet.playerSheet.grabImage(8, 1, 32, 64);
+        checkpoint[0] = SpriteSheet.playerSheet.grabImage(7, 3, 32, 32);
+        checkpoint[1] = SpriteSheet.playerSheet.grabImage(8, 3, 32, 32);
+        checkpoint[3] = SpriteSheet.playerSheet.grabImage(9, 3, 32, 32);
+        checkpoint[4] = SpriteSheet.playerSheet.grabImage(10, 3, 32, 32);
+        checkpoint[5] = SpriteSheet.playerSheet.grabImage(11, 3, 32, 32);
+        checkpoint[6] = SpriteSheet.playerSheet.grabImage(12, 3, 32, 32);
+        checkpoint[7] = SpriteSheet.playerSheet.grabImage(13, 3, 32, 32);
+        checkpoint[8] = SpriteSheet.playerSheet.grabImage(14, 3, 32, 32);
+        checkpoint[9] = SpriteSheet.playerSheet.grabImage(15, 3, 32, 32);
     }
 
 }
