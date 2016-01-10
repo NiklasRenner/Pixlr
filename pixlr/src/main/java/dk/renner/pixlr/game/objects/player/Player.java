@@ -5,10 +5,7 @@ import dk.renner.pixlr.game.graphics.Animation;
 import dk.renner.pixlr.game.graphics.Sprite;
 import dk.renner.pixlr.game.objects.GameObject;
 import dk.renner.pixlr.game.objects.ObjectEnum;
-import dk.renner.pixlr.game.objects.blocks.Apple;
-import dk.renner.pixlr.game.objects.blocks.Checkpoint;
-import dk.renner.pixlr.game.objects.blocks.Laser;
-import dk.renner.pixlr.game.objects.blocks.MovingBlock;
+import dk.renner.pixlr.game.objects.blocks.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -187,6 +184,7 @@ public class Player extends GameObject {
                         || getFutureBoundsTop().intersects(object.getBounds())
                         || getFutureBoundsBottom().intersects(object.getBounds())) {
                     lives--;
+                    ((Spikes)object).setBloody();
                     if (lives <= 0) {
                         //System.exit(0);
                     }

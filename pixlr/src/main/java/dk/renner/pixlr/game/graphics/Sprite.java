@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class Sprite {
     
     public static final BufferedImage[] player = new BufferedImage[9];
-    public static final BufferedImage[] block = new BufferedImage[3];
+    public static final BufferedImage[] block = new BufferedImage[4];
     public static final BufferedImage[] apple = new BufferedImage[1];
     public static final BufferedImage[] laserTop = new BufferedImage[2];
     public static final BufferedImage[] laserBottom = new BufferedImage[2];
@@ -29,7 +29,8 @@ public class Sprite {
         block[0] = SpriteSheet.playerSheet.grabImage(1, 4, 32, 32);
         block[1] = SpriteSheet.playerSheet.grabImage(2, 4, 32, 32);
         block[2] = SpriteSheet.playerSheet.grabImage(3, 4, 32, 32);
-        
+        block[3] = SpriteSheet.playerSheet.grabImage(2, 3, 32, 32);
+
         apple[0] = SpriteSheet.playerSheet.grabImage(5, 4, 32, 32);
 
         laserTop[0] = SpriteSheet.playerSheet.grabImage(6, 5, 32, 32);
