@@ -1,43 +1,36 @@
-package dk.renner.pixlr.game.objects.blocks;
+package dk.renner.pixlr.game.objects;
 
 import dk.renner.pixlr.game.graphics.Sprite;
-import dk.renner.pixlr.game.objects.GameObject;
-import dk.renner.pixlr.game.objects.ObjectEnum;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.List;
 
-/**
- *
- * @author NiklasRenner
- */
-public class Block extends GameObject {
+public non-sealed class Block extends GameObject {
     
     private final BufferedImage image;
 
-    public Block(int id, int width, int height, float x, float y) {
-        super(id, width, height, x, y);
-        if(id == ObjectEnum.BLOCK.ordinal()){
-        image = Sprite.block[0];
-        } else if (id == ObjectEnum.GRASS.ordinal()){
-            image = Sprite.block[2];
-        } else {
-            //TODO DEFAULT
-            image = null;
-        }
+    public Block(GameObjectType type, int width, int height, float x, float y) {
+        super(type, width, height, x, y);
+        image = switch (type) {
+            case BLOCK, MOVING_BLOCK -> Sprite.block[0];
+            case GRASS -> Sprite.block[2];
+            default -> throw new IllegalArgumentException("Unsupported block type: " + type);
+        };
+    }
+
+    public boolean isSolid() {
+        return getType() == GameObjectType.BLOCK || getType() == GameObjectType.MOVING_BLOCK;
     }
 
     @Override
-    public void runLogic(ArrayList<GameObject> blocks) {
+    public void runLogic(List<GameObject> blocks) {
         
     }
 
     @Override
     public void drawGraphics(Graphics g) {
         g.drawImage(image, (int)x, (int)y, null);
-//        g.setColor(Color.red);
-//        g.drawRect((int)x,(int)y,32,32);
     }
 
     @Override

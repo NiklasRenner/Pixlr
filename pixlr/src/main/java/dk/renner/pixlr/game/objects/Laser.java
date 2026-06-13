@@ -1,53 +1,49 @@
-package dk.renner.pixlr.game.objects.blocks;
+package dk.renner.pixlr.game.objects;
 
 import dk.renner.pixlr.game.graphics.Sprite;
-import dk.renner.pixlr.game.objects.GameObject;
-import dk.renner.pixlr.game.objects.ObjectEnum;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.List;
 
-public class Laser extends GameObject {
+public final class Laser extends GameObject {
 
-    private BufferedImage[] laserSprite;
-    private int timer;
+    private final BufferedImage[] laserSprite;
+    private final int timer;
     private int counter;
-    private boolean active;
 
-    private Rectangle rec = new Rectangle((int) x + 15, (int) y, 2, 32);
+    private final Rectangle rec = new Rectangle((int) x + 15, (int) y, 2, 32);
 
-    public Laser(int id, int width, int height, float x, float y) {
-        super(id, width, height, x, y);
+    public Laser(GameObjectType type, int width, int height, float x, float y) {
+        this(type, width, height, x, y, 150);
+    }
 
-        if (id == ObjectEnum.LASER_TOP.ordinal()) {
-            laserSprite = Sprite.laserTop;
-        } else if (id == ObjectEnum.LASER_BOTTOM.ordinal()) {
-            laserSprite = Sprite.laserBottom;
-        }
-
-        timer = 150;
-        active = true;
+    Laser(GameObjectType type, int width, int height, float x, float y, int timer) {
+        super(type, width, height, x, y);
+        laserSprite = switch (type) {
+            case LASER_TOP -> Sprite.laserTop;
+            case LASER_BOTTOM -> Sprite.laserBottom;
+            default -> throw new IllegalArgumentException("Unsupported laser type: " + type);
+        };
+        this.timer = timer;
     }
 
     @Override
-    public void runLogic(ArrayList<GameObject> blocks) {
+    public void runLogic(List<GameObject> blocks) {
         counter++;
         if (counter >= timer) {
-            active = !active;
+            setActive(!isActive());
             counter = 0;
         }
     }
 
     @Override
     public void drawGraphics(Graphics g) {
-        if (active) {
+        if (isActive()) {
             g.drawImage(laserSprite[0], (int) x, (int) y, null);
         } else {
             g.drawImage(laserSprite[1], (int) x, (int) y, null);
         }
-//        g.setColor(Color.RED);
-//        g.drawRect(rec.x, rec.y, rec.width, rec.height);
     }
 
     @Override
@@ -75,7 +71,4 @@ public class Laser extends GameObject {
         throw new UnsupportedOperationException("Use getBounds on blocks.");
     }
 
-    public boolean isActive() {
-        return active;
-    }
 }

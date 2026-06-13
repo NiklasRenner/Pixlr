@@ -1,5 +1,6 @@
 package dk.renner.pixlr.game;
 
+import dk.renner.pixlr.game.config.Configuration;
 import dk.renner.pixlr.utils.Utility;
 
 import javax.swing.*;
@@ -8,7 +9,6 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 
 public abstract class Frame extends JFrame implements KeyListener, MouseMotionListener, MouseListener, MouseWheelListener {
-
     private BufferStrategy bufferStrategy;
     private boolean running;
 
@@ -30,9 +30,7 @@ public abstract class Frame extends JFrame implements KeyListener, MouseMotionLi
         setFocusable(true);
     }
 
-    public void runLogic() {
-
-    }
+    abstract public void runLogic();
 
     private void startLogicThread() {
         Thread t = new Thread(() -> {
@@ -45,18 +43,13 @@ public abstract class Frame extends JFrame implements KeyListener, MouseMotionLi
         t.start();
     }
 
-    public void drawGraphics(Graphics g) {
-
-    }
+    abstract public void drawGraphics(Graphics g);
 
     private void startGraphicsThread() {
         Thread t = new Thread(() -> {
             while (running) {
                 if (Configuration.getInstance().isActiveRendering() && bufferStrategy != null) {
-                    Graphics g = bufferStrategy.getDrawGraphics();
-                    drawGraphics(g);
-                    bufferStrategy.show();
-                    g.dispose();
+                    renderFrame();
                 } else {
                     repaint();
                 }
@@ -65,6 +58,22 @@ public abstract class Frame extends JFrame implements KeyListener, MouseMotionLi
         });
         t.setDaemon(true);
         t.start();
+    }
+
+    private void renderFrame() {
+        do {
+            do {
+                Graphics g = bufferStrategy.getDrawGraphics();
+                try {
+                    drawGraphics(g);
+                } finally {
+                    g.dispose();
+                }
+            } while (bufferStrategy.contentsRestored());
+
+            bufferStrategy.show();
+            Toolkit.getDefaultToolkit().sync();
+        } while (bufferStrategy.contentsLost());
     }
 
     public void fullscreen(DisplayMode displayMode) {
@@ -109,14 +118,6 @@ public abstract class Frame extends JFrame implements KeyListener, MouseMotionLi
             startLogicThread();
             startGraphicsThread();
         }
-    }
-
-    public boolean isRunning() {
-        return running;
-    }
-
-    public void setRunning(boolean running) {
-        this.running = running;
     }
 
     public final void removeFocus(Component comp) {

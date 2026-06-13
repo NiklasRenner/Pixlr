@@ -1,37 +1,26 @@
 package dk.renner.pixlr.game;
 
-import dk.renner.pixlr.game.objects.GameObject;
-import dk.renner.pixlr.game.objects.ObjectEnum;
-import dk.renner.pixlr.game.objects.player.Player;
+import dk.renner.pixlr.game.config.Configuration;
+import dk.renner.pixlr.game.objects.Player;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.util.ArrayList;
 
-/**
- * @author NiklasRenner
- */
 public class Game extends Frame {
-
-    public static final int X = 64;
-    public static final int Y = 64;
     private long then;
     private int fps;
     private int frameCount;
 
-    //tmp
-    private final Player player;
-    private final ArrayList<GameObject> blocks;
+    private final LevelData level;
 
-    public static void main(String[] args) {
+    static void main() {
         new Game();
     }
 
     public Game() {
-        player = new Player(ObjectEnum.PLAYER.ordinal(), 64, 64, X, Y);
-        blocks = new Level("graphics/levelTest.png").loadLevel();
+        level = LevelFactory.loadLevel("graphics/generated-test-level.png");
 
         then = System.currentTimeMillis();
         fps = 0;
@@ -46,58 +35,83 @@ public class Game extends Frame {
             System.exit(0);
         }
 
+        Player player = level.player();
+
         if (e.getKeyCode() == KeyEvent.VK_R) {
-            player.setX(X);
-            player.setY(Y);
+            player.moveToSpawn();
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
+        if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
             player.jump();
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
             player.walkLeft(true);
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
             player.walkRight(true);
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            player.shoot();
-        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        Player player = level.player();
+
+        if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
             player.walkLeft(false);
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
             player.walkRight(false);
         }
     }
 
     @Override
     public void runLogic() {
+        Player player = level.player();
+        var blocks = level.objects();
+
+        blocks.forEach(block -> block.runLogic(blocks));
         player.runLogic(blocks);
     }
 
     @Override
-    public void drawGraphics(Graphics g) {
-        g.setColor(new Color(0, 125, 255));
-        g.fillRect(0, 0, Configuration.getInstance().getWidth(), Configuration.getInstance().getHeight());
-        g.translate((int) player.getCamX(), (int) player.getCamY());
-        player.drawGraphics(g);
-        for (GameObject block : blocks) {
-            block.runLogic(blocks);
-            block.drawGraphics(g);
+    public void drawGraphics(Graphics rootGraphics) {
+        rootGraphics.setColor(new Color(0, 125, 255));
+        rootGraphics.fillRect(0, 0, Configuration.getInstance().getWidth(), Configuration.getInstance().getHeight());
+
+        Player player = level.player();
+        var blocks = level.objects();
+
+        var worldGraphics = rootGraphics.create();
+        try {
+            worldGraphics.translate(
+                    (int) player.getCamX(),
+                    (int) player.getCamY()
+            );
+
+            player.drawGraphics(worldGraphics);
+            blocks.forEach(block -> block.drawGraphics(worldGraphics));
+        } finally {
+            worldGraphics.dispose();
         }
-        g.translate((int) -player.getCamX(), (int) -player.getCamY());
-        getFps(g);
+
+        drawHud(rootGraphics, player);
+    }
+
+    private void drawHud(Graphics g, Player player) {
+        frameCount++;
+        var now = System.currentTimeMillis();
+        if (now - then >= 1000) {
+            fps = frameCount;
+            then = now;
+            frameCount = 0;
+        }
+        g.setColor(Color.white);
+        g.drawString("FPS: " + fps, 8, 40);
         g.drawString("Lives: " + player.getLives(), 8, 52);
-        g.dispose();
     }
 
     @Override
@@ -119,17 +133,4 @@ public class Game extends Frame {
     public void mouseWheelMovedAction(MouseWheelEvent e) {
         //TODO
     }
-
-    public void getFps(Graphics g) {
-        frameCount++;
-        long now = System.currentTimeMillis();
-        if (now - then >= 1000) {
-            fps = frameCount;
-            then = now;
-            frameCount = 0;
-        }
-        g.setColor(Color.white);
-        g.drawString("FPS: " + fps, 8, 40);
-    }
-
 }

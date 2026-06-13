@@ -5,19 +5,24 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class BufferedImageLoader {
+public final class BufferedImageLoader {
+
+    private BufferedImageLoader() {
+    }
 
     public static BufferedImage loadImage(String path) {
-        BufferedImage image = null;
-
-        try {
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            InputStream stream = classLoader.getResourceAsStream(path);
-            image = ImageIO.read(stream);
+        try (InputStream stream = BufferedImageLoader.class.getResourceAsStream("/" + path)) {
+            if (stream == null) {
+                throw new IllegalArgumentException("Could not find resource: " + path);
+            }
+            BufferedImage image = ImageIO.read(stream);
+            if (image == null) {
+                throw new IllegalArgumentException("Resource is not a supported image: " + path);
+            }
+            return image;
         } catch (IOException ex) {
-            ex.printStackTrace();
+            throw new IllegalArgumentException("Could not load image resource: " + path, ex);
         }
-        return image;
     }
 
 }

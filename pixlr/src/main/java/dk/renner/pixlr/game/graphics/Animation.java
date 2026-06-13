@@ -1,14 +1,14 @@
 package dk.renner.pixlr.game.graphics;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Animation {
 
     private final int frames;
     private final BufferedImage[] images;
-    
-    private int speed;
+    private final int speed;
+
     private int index = 0;
     private int count = 1;
     private BufferedImage currentImg;
@@ -41,25 +41,8 @@ public class Animation {
             count = 0;
         }
     }
-    
-    public void reset(){
-        index = 0;
-        count = 1;
-    }
-    
-    public void setSpeed(int speed){
-        this.speed = speed;
-    }
-
-    public void drawAnimation(Graphics g, int x, int y) {
-        g.drawImage(currentImg, x, y, null);
-    }
 
     public void drawAnimation(Graphics g, int x, int y, int scaleX, int scaleY) {
         g.drawImage(currentImg, x, y, scaleX, scaleY, null);
-    }
-    
-    public BufferedImage getFrame(){
-        return currentImg;
     }
 }

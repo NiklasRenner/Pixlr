@@ -1,16 +1,12 @@
-package dk.renner.pixlr.game.objects.blocks;
+package dk.renner.pixlr.game.objects;
 
 import dk.renner.pixlr.game.graphics.Sprite;
-import dk.renner.pixlr.game.objects.GameObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.List;
 
-/**
- * @author NiklasRenner
- */
-public class Spikes extends GameObject {
+public final class Spikes extends GameObject {
 
     private final BufferedImage spike;
     private final BufferedImage spikeBloody;
@@ -18,8 +14,8 @@ public class Spikes extends GameObject {
 
     private boolean bloody;
 
-    public Spikes(int id, int width, int height, float x, float y) {
-        super(id, width, height, x, y);
+    public Spikes(int width, int height, float x, float y) {
+        super(GameObjectType.SPIKES, width, height, x, y);
         bloody = false;
         spike = Sprite.block[1];
         grass = Sprite.block[2];
@@ -27,7 +23,7 @@ public class Spikes extends GameObject {
     }
 
     @Override
-    public void runLogic(ArrayList<GameObject> blocks) {
+    public void runLogic(List<GameObject> blocks) {
 
     }
 
@@ -39,9 +35,6 @@ public class Spikes extends GameObject {
             g.drawImage(spike, (int) x, (int) y, null);
         }
         g.drawImage(grass, (int) x, (int) y, null);
-
-//        g.setColor(Color.red);
-//        g.drawRect((int) x + 4, (int) y + 24, 24, 8);
     }
 
     @Override

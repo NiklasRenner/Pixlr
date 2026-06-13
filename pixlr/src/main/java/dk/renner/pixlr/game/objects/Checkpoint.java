@@ -1,28 +1,22 @@
-package dk.renner.pixlr.game.objects.blocks;
+package dk.renner.pixlr.game.objects;
 
 import dk.renner.pixlr.game.graphics.Sprite;
-import dk.renner.pixlr.game.objects.GameObject;
-import dk.renner.pixlr.game.objects.player.Player;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by Daniel on 09-01-2016.
- */
-public class Checkpoint extends GameObject {
-
+public final class Checkpoint extends GameObject {
     private static final BufferedImage[] checkpointSprite = Sprite.checkpoint;
     public static final int ANIMATION_SPEED = 10;
 
     private boolean active;
-    private Rectangle hitbox;
+    private final Rectangle hitbox;
     private int count;
     private int index;
 
-    public Checkpoint(int id, int width, int height, float x, float y) {
-        super(id, width, height, x, y);
+    public Checkpoint(int width, int height, float x, float y) {
+        super(GameObjectType.CHECKPOINT, width, height, x, y);
         hitbox = new Rectangle((int) x, (int) y, 32, 32);
         active = false;
         count = 0;
@@ -30,7 +24,7 @@ public class Checkpoint extends GameObject {
     }
 
     @Override
-    public void runLogic(ArrayList<GameObject> blocks) {
+    public void runLogic(List<GameObject> blocks) {
 
     }
 
@@ -48,8 +42,6 @@ public class Checkpoint extends GameObject {
         } else {
             g.drawImage(checkpointSprite[0], (int) x, (int) y, null);
         }
-//        g.setColor(Color.BLACK);
-//        g.drawRect(hitbox.x,hitbox.y,hitbox.width,hitbox.height);
     }
 
     @Override

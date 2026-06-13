@@ -1,52 +1,75 @@
 package dk.renner.pixlr.game.objects;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.ArrayList;
+import java.awt.*;
+import java.util.List;
 
-public abstract class GameObject {
+public abstract sealed class GameObject permits Block, Checkpoint, Laser, Player, Spikes {
 
-    protected int id;
     protected int width;
     protected int height;
     protected float x;
     protected float y;
     protected float velX;
     protected float velY;
+    private final GameObjectType type;
+    private boolean active;
+    private boolean interactable;
 
-    public GameObject(int id, int width, int height, float x, float y) {
-        this.id = id;
+    public GameObject(GameObjectType type, int width, int height, float x, float y) {
+        this.type = type;
         this.width = width;
         this.height = height;
         this.x = x;
         this.y = y;
         velX = 0;
         velY = 0;
+        active = true;
+        interactable = true;
     }
 
-    public abstract void runLogic(ArrayList<GameObject> blocks);
+    public abstract void runLogic(List<GameObject> blocks);
 
     public abstract void drawGraphics(Graphics g);
 
-    public int getId() {
-        return id;
+    public GameObjectType getType() {
+        return type;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isInteractable() {
+        return active && interactable;
+    }
+
+    public void setInteractable(boolean interactable) {
+        this.interactable = interactable;
+    }
+
+    public boolean canInteractWith(GameObject other) {
+        return other != this && isInteractable() && other.isInteractable();
     }
 
     public abstract Rectangle getBounds();
 
     public abstract Rectangle getBoundsTop();
-    
+
     public abstract Rectangle getBoundsBottom();
 
     public abstract Rectangle getBoundsLeft();
 
     public abstract Rectangle getBoundsRight();
-    
-    public int getWidth(){
+
+    public int getWidth() {
         return width;
     }
-    
-    public int getHeight(){
+
+    public int getHeight() {
         return height;
     }
 
